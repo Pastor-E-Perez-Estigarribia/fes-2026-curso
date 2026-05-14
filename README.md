@@ -4,7 +4,11 @@ Bienvenido al repositorio oficial del módulo **Fundamentos de Estadística y Si
 
 ## **🌐 Sitio Web del Curso**
 
-El material teórico, cronograma y syllabus interactivo se encuentran publicados en: **\[Insertar enlace de GitHub Pages aquí\]**
+El material teórico, cronograma y syllabus interactivo se encuentran publicados en:
+
+[**Sitio Web FES 2026 (GitHub Pages)**](https://pastor-e-perez-estigarribia.github.io/fes-2026-curso/)
+
+*(Nota: El código fuente de la web y los cuadernos se encuentran en este [Repositorio de GitHub](https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso))*
 
 ## **📚 Estructura del Módulo**
 
@@ -26,7 +30,13 @@ Este repositorio sigue un enfoque bilingüe (R y Python) para el Análisis Explo
 
 ## **📁 Estructura del Repositorio**
 
-\`\`\`text / ├── index.html \# Página principal y Syllabus ├── clase1.html \# Material interactivo: Unidad 1 (EDA) ├── clase2.html \# Material interactivo: Unidad 2 (Probabilidad/Inferencia) ├── /notebooks \# Cuadernos de Google Colab (.ipynb) para tareas ├── /data \# Datasets utilizados en clase (CSV, Excel) └── README.md \# Este documento \`\`\`
+/  
+├── index.html          \# Página principal y Syllabus  
+├── clase1.html         \# Material interactivo: Unidad 1 (EDA)  
+├── clase2.html         \# Material interactivo: Unidad 2 (Probabilidad/Inferencia)  
+├── /notebooks          \# Cuadernos de Google Colab (.ipynb) para tareas  
+├── /data               \# Datasets utilizados en clase (CSV, Excel)  
+└── README.md           \# Este documento
 
 ## **🤖 Asistente de Inteligencia Artificial**
 
