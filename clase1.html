@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 1: EDA - Fundamentos de Estadística</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' } } } } }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .math-block { overflow-x: auto; padding: 1rem 0; }
+        pre { background-color: #1e293b; color: #f8fafc; padding: 1.25rem; border-radius: 0.75rem; overflow-x: auto; margin-top: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; line-height: 1.5;}
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Menú Móvil -->
+    <div class="md:hidden fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3 flex justify-between items-center">
+        <div class="font-bold text-lg text-brand-600 truncate">FES 2026 - Clase 1</div>
+        <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Barra Lateral -->
+    <aside id="sidebar" class="bg-white w-64 border-r border-gray-200 flex-shrink-0 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg md:shadow-none mt-14 md:mt-0 pt-4 md:pt-0">
+        <div class="h-full flex flex-col">
+            <div class="p-6 hidden md:block">
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">Estadística y Simulación</h1>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</p>
+                <a href="index.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i> Inicio / Syllabus
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Bloques de Clase</p>
+                <!-- Enlace Activo -->
+                <a href="clase1.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-brand-50 text-brand-600 transition-colors">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i> Clase 1: Intro y EDA
+                </a>
+                <a href="clase2.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-vial mr-3 w-5 text-center"></i> Clase 2: Pruebas de Hipótesis
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-30 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-8 pt-20 md:pt-8 w-full">
+        <div class="max-w-4xl mx-auto space-y-8 pb-12">
+            
+            <header class="bg-white rounded-xl shadow-sm p-8 border border-gray-100 border-l-4 border-l-brand-500">
+                <span class="text-sm font-bold text-brand-600 tracking-wider uppercase mb-2 block">Unidad 1</span>
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-2">EDA Integral: De Tukey a Wickham</h1>
+                <p class="text-gray-600">Fundamentos univariados y multivariados (Tukey) integrados con el modelado exploratorio moderno (Wickham & Grolemund).</p>
+            </header>
+
+            <!-- 1. Abordaje Conceptual -->
+            <section class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">1</span>
+                    Abordaje Conceptual Integrado
+                </h2>
+                <div class="prose max-w-none text-gray-700 space-y-4">
+                    <p>El <strong>Análisis Exploratorio de Datos (EDA)</strong> es el pilar de la ciencia de datos empírica. Evoluciona desde la descripción inicial de los datos hasta la generación de hipótesis complejas, combinando dos filosofías fundamentales:</p>
+                    
+                    <h3 class="text-lg font-bold text-gray-800 mt-4">1. El Enfoque Clásico (John Tukey, 1977)</h3>
+                    <p>Tukey concibió el EDA como un "trabajo de detective" basado en describir la realidad de los datos antes de asumir modelos. Se enfoca en:</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>EDA Univariado (Variación):</strong> Entender la distribución individual de cada variable. ¿Dónde está el centro (Media/Mediana)? ¿Cuál es la dispersión (Varianza/IQR)? ¿Hay asimetría?</li>
+                        <li><strong>EDA Bivariado y Multivariado (Covariación):</strong> Evaluar cómo interactúan las variables (Covarianza, Correlación) mediante diagramas de dispersión o matrices.</li>
+                        <li><strong>Detección de Anomalías (Outliers):</strong> Identificar valores atípicos que podrían ser errores de medición o descubrimientos invaluables (usando Boxplots y rangos intercuartílicos).</li>
+                    </ul>
+
+                    <h3 class="text-lg font-bold text-gray-800 mt-4">2. El Modelado Exploratorio (Wickham & Grolemund)</h3>
+                    <p>El libro <em>R for Data Science</em> lleva el EDA un paso más allá al proponer un estado mental iterativo donde <strong>los modelos matemáticos se usan como herramientas de exploración</strong>, no solo de predicción.</p>
+                    <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 mt-2 text-sm text-indigo-900">
+                        <strong>Separar la Señal del Ruido:</strong> Ajustamos un modelo simple para capturar la "señal" fuerte (la relación obvia descubierta en el EDA Bivariado). Una vez extraída esa señal, analizamos los <strong>residuos</strong> (el ruido sobrante) para cazar anomalías sutiles o patrones ocultos multivariados que antes estaban enmascarados.
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Formalización Matemática -->
+            <section class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">2</span>
+                    Caja de Herramientas Matemáticas
+                </h2>
+                <div class="prose max-w-none text-gray-700 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Tukey: Outliers & Correlación -->
+                        <div class="bg-gray-50 p-4 rounded-lg math-block">
+                            <p class="font-semibold text-gray-800 mb-2">Límites de Outliers (Tukey):</p>
+                            $$ L_{inf} = Q_1 - 1.5 \times IQR $$
+                            $$ L_{sup} = Q_3 + 1.5 \times IQR $$
+                            <p class="text-xs text-gray-500 mt-2">Valores fuera de estos límites en un boxplot se consideran atípicos.</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg math-block">
+                            <p class="font-semibold text-gray-800 mb-2">Correlación de Pearson (\(r\)):</p>
+                            $$ r = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2 \sum (y_i - \bar{y})^2}} $$
+                            <p class="text-xs text-gray-500 mt-2">Mide la fuerza y dirección de la asociación lineal bivariada (-1 a 1).</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <!-- Wickham: Modelo y Residuos -->
+                        <div class="bg-gray-50 p-4 rounded-lg math-block">
+                            <p class="font-semibold text-gray-800 mb-2">Modelo Exploratorio (Señal):</p>
+                            $$ \hat{y}_i = \beta_0 + \beta_1 x_i $$
+                            <p class="text-xs text-gray-500 mt-2">Predicción matemática de la tendencia principal (covariación).</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg math-block">
+                            <p class="font-semibold text-gray-800 mb-2">Cálculo de Residuos (Ruido):</p>
+                            $$ e_i = y_i - \hat{y}_i $$
+                            <p class="text-xs text-gray-500 mt-2">El valor real menos el predicho. Lo que el modelo exploratorio no logró explicar.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Ejemplo de Aplicación -->
+            <section class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">3</span>
+                    Aplicación Industrial: Fatiga de Materiales
+                </h2>
+                <div class="prose max-w-none text-gray-700">
+                    <p><strong>El problema:</strong> En una línea de ensamblaje, analizamos la Vida Útil de una herramienta de corte (\(Y\)) respecto a la Velocidad del rotor (\(X\)).</p>
+                    <p><strong>Fase 1 (Tukey):</strong> El EDA Univariado muestra con un <em>Boxplot</em> que la vida útil tiene algunos <em>outliers</em> severos. El EDA Bivariado revela una correlación de \(r = -0.85\): a mayor velocidad, menor vida útil. <em>Esta es nuestra señal obvia.</em></p>
+                    <p><strong>Fase 2 (Wickham):</strong> Queremos saber si influye el "Proveedor" del material (variable multivariada oculta). Ajustamos un modelo lineal <code>Vida ~ Velocidad</code> para eliminar la penalización obvia de la velocidad. Al graficar los <strong>residuos</strong> por Proveedor, notamos que el Proveedor A siempre tiene residuos positivos (sus piezas duran más de lo que predice la matemática para esa velocidad). Usamos el modelo exploratorio como "lupa" para descubrir un patrón multivariado.</p>
+                </div>
+            </section>
+
+            <!-- 4. Código R -->
+            <section class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-blue-800 text-white w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm font-serif">R</span>
+                    Implementación en R (Pipeline Completo)
+                </h2>
+                <p class="text-gray-600 mb-2 text-sm">Desde la exploración visual básica hasta el modelado exploratorio con <code>modelr</code>.</p>
+<pre><code>library(tidyverse)
+library(modelr)
+
+# 1. Datos simulados de la industria
+set.seed(42)
+df_maquinas <- tibble(
+  velocidad = runif(100, 1000, 3000),
+  proveedor = sample(c("A", "B"), 100, replace = TRUE),
+  # El Proveedor A tiene un bonus oculto de +200h de vida
+  vida_util = 5000 - (velocidad * 1.2) + ifelse(proveedor == "A", 200, 0) + rnorm(100, 0, 50)
+)
+
+# 2. Fase Tukey: EDA Bivariado Visual
+plot_tukey <- ggplot(df_maquinas, aes(x = velocidad, y = vida_util)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgray") +
+  labs(title = "EDA Bivariado (La Señal)")
+
+# 3. Fase Wickham: Modelado Exploratorio
+modelo <- lm(vida_util ~ velocidad, data = df_maquinas)
+
+df_maquinas_exp <- df_maquinas |>
+  add_predictions(modelo) |>
+  add_residuals(modelo)
+
+# 4. Revelando el EDA Multivariado a través de Residuos
+plot_wickham <- ggplot(df_maquinas_exp, aes(x = proveedor, y = resid, fill = proveedor)) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Análisis de Residuos: Descubrimiento Multivariado")
+
+# (En RStudio, mostrar ambos gráficos)</code></pre>
+            </section>
+
+            <!-- 5. Código Python -->
+            <section class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-yellow-400 text-yellow-900 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm font-mono">Py</span>
+                    Implementación en Python (Pandas & Statsmodels)
+                </h2>
+                <p class="text-gray-600 mb-2 text-sm">Flujo de detección de outliers (Tukey) y extracción de residuos (Wickham).</p>
+<pre><code>import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as smf
+
+# 1. Simulación (Mismos datos)
+np.random.seed(42)
+velocidad = np.random.uniform(1000, 3000, 100)
+proveedor = np.random.choice(["A", "B"], 100)
+bonus = np.where(proveedor == "A", 200, 0)
+vida_util = 5000 - (velocidad * 1.2) + bonus + np.random.normal(0, 50, 100)
+
+df_maquinas = pd.DataFrame({'velocidad': velocidad, 'proveedor': proveedor, 'vida_util': vida_util})
+
+# 2. Detección de Outliers (Método IQR Tukey)
+Q1 = df_maquinas['vida_util'].quantile(0.25)
+Q3 = df_maquinas['vida_util'].quantile(0.75)
+IQR = Q3 - Q1
+outliers = df_maquinas[(df_maquinas['vida_util'] < (Q1 - 1.5 * IQR)) | (df_maquinas['vida_util'] > (Q3 + 1.5 * IQR))]
+
+# 3. Modelado Exploratorio (Wickham)
+modelo = smf.ols('vida_util ~ velocidad', data=df_maquinas).fit()
+df_maquinas['residuos'] = modelo.resid
+
+# 4. Visualización Conjunta
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# EDA Bivariado
+sns.scatterplot(data=df_maquinas, x='velocidad', y='vida_util', ax=axes[0])
+axes[0].set_title("EDA: Covariación Original")
+
+# Análisis de Residuos Multivariado
+sns.boxplot(data=df_maquinas, x='proveedor', y='residuos', ax=axes[1], palette="Set2")
+axes[1].axhline(0, color='red', linestyle='--')
+axes[1].set_title("Modelado Exploratorio: Residuos por Proveedor")
+
+plt.tight_layout()
+plt.show()</code></pre>
+            </section>
+
+            <!-- 6. Desafíos Prácticos -->
+            <section class="bg-gradient-to-br from-brand-50 to-white rounded-xl shadow-sm p-8 border border-brand-200">
+                <h2 class="text-2xl font-bold text-brand-900 mb-4 flex items-center">
+                    <i class="fas fa-gamepad text-brand-600 mr-3"></i>
+                    Retos de Exploración
+                </h2>
+                <div class="space-y-4">
+                    
+                    <!-- Reto 1: Tukey -->
+                    <div class="bg-white p-5 rounded-lg border border-brand-100 shadow-sm">
+                        <h3 class="font-bold text-gray-800 mb-2">Desafío 1: El Problema de la Sobreposición (Overplotting)</h3>
+                        <p class="text-gray-700 text-sm">Basado en los fundamentos del EDA visual, ¿qué problema surge si graficamos un diagrama de dispersión (Scatterplot) de temperatura vs. presión de un reactor con 2 millones de registros? Investiga en la documentación de `ggplot2` (R) o `seaborn` (Python) cómo implementar un gráfico de "Densidad 2D" o "Hexbin" para solucionar esto.</p>
+                    </div>
+
+                    <!-- Reto 2: Wickham -->
+                    <div class="bg-white p-5 rounded-lg border border-brand-100 shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-bl-lg">Nivel Avanzado</div>
+                        <h3 class="font-bold text-gray-800 mb-2">Desafío 2: Misión Cazador de Residuos</h3>
+                        <p class="text-gray-700 text-sm mb-3">Carga el dataset <code>diamonds</code> en R o Python. Se sabe que a mayor peso (<code>carat</code>), mayor es el <code>price</code> (covariación obvia). Tu misión es usar el enfoque de Wickham:</p>
+                        <ol class="list-decimal pl-5 text-sm text-gray-600 space-y-1">
+                            <li>Crea un modelo lineal prediciendo <code>price</code> en función de <code>carat</code>.</li>
+                            <li>Añade los residuos al dataset.</li>
+                            <li>Haz un boxplot explorando los <strong>residuos</strong> en función de la calidad del corte (<code>cut</code>). ¿Qué calidad de corte tiene los residuos positivos más altos, y qué significa esto en el mundo real?</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Fundamentos de Estadística y Simulación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' } } } } }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Menú Móvil -->
+    <div class="md:hidden fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3 flex justify-between items-center">
+        <div class="font-bold text-lg text-brand-600 truncate">FES 2026</div>
+        <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Barra Lateral -->
+    <aside id="sidebar" class="bg-white w-64 border-r border-gray-200 flex-shrink-0 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg md:shadow-none mt-14 md:mt-0 pt-4 md:pt-0">
+        <div class="h-full flex flex-col">
+            <div class="p-6 hidden md:block">
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">Estadística y Simulación</h1>
+                <p class="text-sm text-gray-500 mt-2">MCC003 - Univ. de El Salvador</p>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</p>
+                <!-- Enlace Activo -->
+                <a href="index.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-brand-50 text-brand-600 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i> Inicio / Syllabus
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Bloques de Clase</p>
+                <a href="clase1.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i> Clase 1: Intro y EDA
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Próximos Bloques</p>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 2: Distribuciones de Probabilidad
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 3: Inferencia
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 4: Multivariado
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 5: Series de Tiempo
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 6: Simulación
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200">
+                <a href="#" class="flex items-center text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">
+                    <i class="fab fa-github mr-2"></i> Repositorio GitHub
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-30 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-8 pt-20 md:pt-8 w-full">
+        <div class="max-w-5xl mx-auto space-y-6 md:space-y-8 pb-12">
+            
+            <header class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2 sm:gap-0">
+                    <span class="bg-brand-100 text-brand-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide inline-block w-max">Mayo - Junio 2026</span>
+                    <span class="text-sm text-gray-500"><i class="far fa-clock"></i> 80 Horas Totales</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Fundamentos de Estadística y Simulación</h1>
+                <p class="text-base md:text-lg text-gray-600">Módulo de la Maestría en Ingeniería para la Industria con Especialización en Ciencias de la Computación.</p>
+                <div class="mt-6 flex flex-col sm:flex-row flex-wrap gap-3">
+                    <a href="https://drive.google.com/drive/folders/1Gve2FFJQiqY3RdMh_zxfFyXIgS_Vk8xr?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <i class="fab fa-google-drive text-lg"></i> Materiales (Drive)
+                    </a>
+                    <a href="#" id="curso-repo-btn" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm" title="Se vinculará próximamente">
+                        <i class="fab fa-github text-lg"></i> Repositorio GitHub
+                    </a>
+                </div>
+            </header>
+
+            <!-- Asistente IA -->
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl shadow-sm p-6 md:p-8 border border-indigo-100 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 lg:gap-6">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i class="fas fa-robot text-indigo-600 text-2xl"></i>
+                        <h2 class="text-xl md:text-2xl font-bold text-gray-900">Asistente de IA del Módulo</h2>
+                    </div>
+                    <p class="text-sm md:text-base text-gray-700">Resuelve tus dudas sobre estadística, código en Python/R y teoría de simulación interactuando con nuestro asistente basado en <strong>NotebookLM</strong>.</p>
+                </div>
+                <a href="https://notebooklm.google.com/notebook/1aacd1cc-a948-490e-b679-1e276438b880" target="_blank" rel="noopener noreferrer" class="w-full lg:w-auto justify-center shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-colors flex items-center gap-2">
+                    <i class="fas fa-external-link-alt"></i> Abrir Asistente
+                </a>
+            </div>
+
+            <!-- Entornos -->
+            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Enfoque y Entornos de Trabajo</h2>
+                <p class="text-sm md:text-base text-gray-700 mb-6">El módulo se desarrollará bajo un <strong>enfoque bilingüe</strong> (R y Python).</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div class="p-5 border border-blue-100 bg-blue-50/50 rounded-xl hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="bg-blue-100 p-2 rounded-lg text-blue-600"><i class="fas fa-laptop-code text-xl"></i></div>
+                            <h3 class="font-bold text-blue-900 text-lg">Entorno Local (PC)</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Para las prácticas en R, es necesario tener instalado R y RStudio.</p>
+                        <a href="https://posit.co/download/rstudio-desktop" target="_blank" class="inline-block text-sm font-bold text-blue-700 hover:underline">
+                            <i class="fas fa-download mr-2"></i> Descargar RStudio
+                        </a>
+                    </div>
+                    <div class="p-5 border border-orange-100 bg-orange-50/50 rounded-xl hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="bg-orange-100 p-2 rounded-lg text-orange-600"><i class="fas fa-cloud text-xl"></i></div>
+                            <h3 class="font-bold text-orange-900 text-lg">Entorno en la Nube</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-4">Como entorno principal para Python (y R) utilizaremos libretas interactivas.</p>
+                        <a href="https://drive.google.com/file/d/1bdDEJxLQJNZiilXvkWpKN4cHzJGv9aj2/view?usp=sharing" target="_blank" class="inline-block text-sm font-bold text-orange-700 hover:underline">
+                            <i class="fas fa-external-link-square-alt mr-2"></i> Acceder a Google Colab
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ruta de Aprendizaje Detallada -->
+            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Ruta de Actividades Sugerida</h2>
+                
+                <div class="relative border-l-2 border-brand-200 ml-3 md:ml-4 space-y-6 md:space-y-8">
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-brand-500 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-brand-600 mb-1">12 de mayo</div>
+                        <p class="text-gray-800 font-medium">Clase 1: Introducción al módulo.</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">Estadística descriptiva, descripción de datos por gráficos y medidas numéricas. Ejercicios Colab: sumarios y visualización (ggplot2/plotly).</p>
+                    </div>
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-gray-300 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-gray-500 mb-1">18 de mayo</div>
+                        <p class="text-gray-800 font-medium">Análisis Exploratorio Bivariado</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">Estudio de tendencias y relaciones entre variables.</p>
+                    </div>
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-gray-300 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-gray-500 mb-1">19 de mayo</div>
+                        <p class="text-gray-800 font-medium">Probabilidad e Industria</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">Distribuciones de probabilidad (discretas y continuas) y sus aplicaciones industriales.</p>
+                    </div>
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-gray-300 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-gray-500 mb-1">25 de mayo</div>
+                        <p class="text-gray-800 font-medium">Inferencia Estadística</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">Estimación, pruebas de hipótesis, distribución muestral, método Bayesiano y Redes Bayesianas.</p>
+                    </div>
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-gray-300 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-gray-500 mb-1">26 de mayo</div>
+                        <p class="text-gray-800 font-medium">Análisis Multivariado</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">PCA, Análisis factorial, Análisis discriminante, Regresión lineal múltiple, Logit, Probit y MANOVA.</p>
+                    </div>
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-gray-300 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-gray-500 mb-1">01 de junio</div>
+                        <p class="text-gray-800 font-medium">Series de Tiempo</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">Fundamentos, procesos estocásticos, estacionariedad, tendencias y modelos.</p>
+                    </div>
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-gray-300 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-gray-500 mb-1">02 de junio</div>
+                        <p class="text-gray-800 font-medium">Teoría de Sistemas y Colas</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">Fundamentos de modelación e introducción a la teoría de colas.</p>
+                    </div>
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-gray-300 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-gray-500 mb-1">08 de junio</div>
+                        <p class="text-gray-800 font-medium">Simulación</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">Técnicas de simulación, experimentación y análisis estadístico de resultados.</p>
+                    </div>
+                    <div class="relative pl-5 md:pl-6">
+                        <div class="absolute -left-2.5 top-1.5 bg-brand-500 h-5 w-5 rounded-full border-4 border-white"></div>
+                        <div class="text-sm font-bold text-brand-600 mb-1">09 al 12 de junio</div>
+                        <p class="text-gray-800 font-medium">Reporte Final</p>
+                        <p class="text-xs md:text-sm text-gray-600 mt-1">Trabajo en el Reporte Final de Estadística y Simulación. Entrega límite el 12 de junio.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evaluaciones -->
+            <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-6 border-b pb-2">Sistema de Evaluación</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-left text-sm whitespace-nowrap">
+                        <thead class="uppercase tracking-wider border-b-2 border-gray-200 bg-gray-50">
+                            <tr>
+                                <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-gray-700">Actividad Evaluada</th>
+                                <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-gray-700">Ponderación</th>
+                                <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-gray-700">Fecha Límite</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="px-4 md:px-6 py-3 md:py-4 text-gray-800 font-medium"><i class="fas fa-file-alt text-blue-500 mr-2"></i> Tarea 1: EDA</td>
+                                <td class="px-4 md:px-6 py-3 md:py-4 font-bold text-gray-900">20%</td>
+                                <td class="px-4 md:px-6 py-3 md:py-4 text-gray-600">25 de mayo</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="px-4 md:px-6 py-3 md:py-4 text-gray-800 font-medium"><i class="fas fa-vial text-purple-500 mr-2"></i> Tarea 2: Pruebas de Hipótesis</td>
+                                <td class="px-4 md:px-6 py-3 md:py-4 font-bold text-gray-900">20%</td>
+                                <td class="px-4 md:px-6 py-3 md:py-4 text-gray-600">01 de junio</td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="px-4 md:px-6 py-3 md:py-4 text-gray-800 font-medium"><i class="fas fa-chart-line text-green-500 mr-2"></i> Tarea 3: GLM</td>
+                                <td class="px-4 md:px-6 py-3 md:py-4 font-bold text-gray-900">20%</td>
+                                <td class="px-4 md:px-6 py-3 md:py-4 text-gray-600">08 de junio</td>
+                            </tr>
+                            <tr class="border-b border-brand-200 bg-brand-50">
+                                <td class="px-4 md:px-6 py-3 md:py-4 text-brand-800 font-bold"><i class="fas fa-project-diagram mr-2"></i> Proyecto Final</td>
+                                <td class="px-4 md:px-6 py-3 md:py-4 font-bold text-brand-900">40%</td>
+                                <td class="px-4 md:px-6 py-3 md:py-4 text-brand-800 font-medium">12 de junio</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
