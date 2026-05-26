@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 2: Probabilidad e Inferencia - FES 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' } } } } }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .math-block { overflow-x: auto; padding: 1rem 0; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Menú Móvil -->
+    <div class="md:hidden fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3 flex justify-between items-center">
+        <div class="font-bold text-lg text-brand-600 truncate">FES 2026 - Clase 2</div>
+        <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Barra Lateral -->
+    <aside id="sidebar" class="bg-white w-64 border-r border-gray-200 flex-shrink-0 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg md:shadow-none mt-14 md:mt-0 pt-4 md:pt-0">
+        <div class="h-full flex flex-col">
+            <div class="p-6 hidden md:block">
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">Estadística y Simulación</h1>
+                <p class="text-sm text-gray-500 mt-2">MCC003 - Univ. de El Salvador</p>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</p>
+                <a href="index.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i> Inicio / Syllabus
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Bloques de Clase</p>
+                <a href="clase1.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i> Clase 1: Intro y EDA
+                </a>
+                <!-- Enlace Activo -->
+                <a href="clase2.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-brand-50 text-brand-600 transition-colors">
+                    <i class="fas fa-dice mr-3 w-5 text-center"></i> Bloque 2: Probabilidad
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Próximos Bloques</p>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 3: Inferencia
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 4: Multivariado
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 5: Series de Tiempo
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 6: Simulación
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200">
+                <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="flex items-center text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">
+                    <i class="fab fa-github mr-2"></i> Repositorio GitHub
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-30 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-8 pt-20 md:pt-8 w-full">
+        <div class="max-w-5xl mx-auto space-y-6 md:space-y-8 pb-12">
+            
+            <header class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100 border-l-4 border-l-blue-500">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2 sm:gap-0">
+                    <span class="text-sm font-bold text-blue-600 tracking-wider uppercase">Unidad 2 y 3</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Probabilidad, Esperanza e Intervalos de Confianza</h1>
+                <p class="text-base md:text-lg text-gray-600">Simulación de eventos aleatorios, Ley de los Grandes Números y cuantificación de la incertidumbre en escenarios industriales.</p>
+                <div class="mt-6 flex flex-col sm:flex-row flex-wrap gap-3">
+                    <a href="https://drive.google.com/drive/folders/1Gve2FFJQiqY3RdMh_zxfFyXIgS_Vk8xr?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <i class="fab fa-google-drive text-lg"></i> Materiales (Drive)
+                    </a>
+                    <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm">
+                        <i class="fab fa-github text-lg"></i> Repositorio GitHub
+                    </a>
+                </div>
+            </header>
+
+            <!-- 1. Enlaces a las Clases Demostrativas (Colab) -->
+            <section class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm p-6 md:p-8 border border-blue-100">
+                <h2 class="text-xl md:text-2xl font-bold text-blue-900 mb-4 flex items-center">
+                    <i class="fab fa-python text-blue-600 mr-3 text-2xl"></i> Laboratorios Interactivos (Jupyter / Colab)
+                </h2>
+                <p class="text-gray-700 mb-6">Acompaña esta teoría ejecutando y modificando el código de las siguientes clases demostrativas alojadas en nuestro repositorio oficial:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/1_Probabilidad_Básica_en_Python.ipynb" target="_blank" class="flex items-center p-4 bg-white border border-blue-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="bg-blue-100 p-3 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors"><i class="fas fa-door-closed"></i></div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-gray-800">1. Probabilidad Básica</h3>
+                            <p class="text-xs text-gray-500">Paradoja de Monty Hall y simulación clásica.</p>
+                        </div>
+                    </a>
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/2_Ley_de_los_Grandes_Números_en_Python.ipynb" target="_blank" class="flex items-center p-4 bg-white border border-blue-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="bg-blue-100 p-3 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors"><i class="fas fa-chart-line"></i></div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-gray-800">2. Ley Grandes Números</h3>
+                            <p class="text-xs text-gray-500">Simulación y convergencia de medias empíricas.</p>
+                        </div>
+                    </a>
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/3_Probabilidad,_valor_esperado,_variabilidad_y_distribuciones.ipynb" target="_blank" class="flex items-center p-4 bg-white border border-blue-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="bg-blue-100 p-3 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors"><i class="fas fa-bell"></i></div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-gray-800">3. Valor Esperado y TLC</h3>
+                            <p class="text-xs text-gray-500">Distribuciones FDA y Teorema del Límite Central.</p>
+                        </div>
+                    </a>
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/4_Intervalos_de_confianza.ipynb" target="_blank" class="flex items-center p-4 bg-white border border-blue-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="bg-blue-100 p-3 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors"><i class="fas fa-arrows-alt-h"></i></div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-gray-800">4. Intervalos Confianza</h3>
+                            <p class="text-xs text-gray-500">Incertidumbre, varianza y colas pesadas.</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 2. Teoría y Matemáticas -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">2</span>
+                    Formalización Matemática
+                </h2>
+                <div class="prose max-w-none text-gray-700 space-y-4">
+                    <p>La probabilidad nos permite cuantificar la incertidumbre de eventos aleatorios. En la ingeniería y en la ciencia de datos no trabajamos con la población completa, sino con muestras extraídas de la misma. Es fundamental comprender cómo el promedio de una muestra converge o diverge a medida que aumenta el volumen de información procesada.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg math-block">
+                            <p class="font-semibold text-gray-800 mb-2">Ley de los Grandes Números (LGN):</p>
+                            $$ \lim_{n \to \infty} \frac{1}{n} \sum_{i=1}^{n} X_i = \mu $$
+                            <p class="text-xs text-gray-500 mt-2">Garantiza que a medida que el tamaño de la muestra (\(n\)) crece hacia el infinito, el promedio muestral empírico se estabiliza y converge hacia el valor esperado teórico de la población (\(\mu\)).</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg math-block">
+                            <p class="font-semibold text-gray-800 mb-2">Intervalo de Confianza (IC):</p>
+                            $$ IC = \bar{X} \pm Z_{\alpha/2} \left( \frac{\sigma}{\sqrt{n}} \right) $$
+                            <p class="text-xs text-gray-500 mt-2">Determina el rango en el cual esperamos que se encuentre la media poblacional. A menor \(n\), tenemos mayor incertidumbre (y usamos distribuciones con colas más pesadas, como la \(t\)-Student).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Simulación Interactiva -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                    <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm"><i class="fas fa-play"></i></span>
+                    Simulador Interactivo: Ley de los Grandes Números
+                </h2>
+                <p class="text-sm text-gray-600 mb-6">El valor esperado al lanzar un dado estándar equilibrado de 6 caras es <strong>3.5</strong>. Haz clic en el botón para simular 1,000 lanzamientos consecutivos y observa cómo el promedio de los resultados oscila violentamente al inicio (alta incertidumbre por el bajo volumen muestral) pero eventualmente converge a la línea teórica a medida que aumenta la $n$.</p>
+                
+                <div class="mb-4">
+                    <button onclick="runSimulation()" class="w-full sm:w-auto justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-sm flex items-center">
+                        <i class="fas fa-dice mr-2"></i> Tirar 1,000 Dados
+                    </button>
+                </div>
+                
+                <!-- Contenedor del Gráfico de Plotly -->
+                <div id="plotLGN" class="w-full h-80 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden">
+                    <span class="text-gray-400 text-sm p-4 text-center">El gráfico interactivo se cargará aquí al presionar el botón...</span>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Script de Navegación y Simulación Interactiva con Plotly -->
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        // Función para Simulación interactiva de Monte Carlo / LGN
+        function runSimulation() {
+            const n_throws = 1000;
+            let current_sum = 0;
+            let x_data = [];
+            let y_data = []; // Media acumulada
+
+            // Simular lanzamientos de un dado discreto uniforme [1, 6]
+            for (let i = 1; i <= n_throws; i++) {
+                let roll = Math.floor(Math.random() * 6) + 1;
+                current_sum += roll;
+                x_data.push(i);
+                y_data.push(current_sum / i);
+            }
+
+            // Trazo de la evolución de la media muestral empírica
+            const traceEmpirical = {
+                x: x_data,
+                y: y_data,
+                mode: 'lines',
+                name: 'Promedio Empírico',
+                line: { color: '#2563eb', width: 2 }
+            };
+
+            // Trazo de la esperanza matemática (Teórica)
+            const traceTheoretical = {
+                x: [1, n_throws],
+                y: [3.5, 3.5],
+                mode: 'lines',
+                name: 'Valor Esperado (3.5)',
+                line: { color: '#ef4444', width: 2, dash: 'dash' }
+            };
+
+            const layout = {
+                title: 'Convergencia Estocástica (LGN)',
+                xaxis: { title: 'Número de Lanzamientos (n)' },
+                yaxis: { title: 'Media Acumulada', range: [1, 6] },
+                margin: { l: 50, r: 20, t: 40, b: 40 },
+                plot_bgcolor: '#f9fafb',
+                paper_bgcolor: '#ffffff',
+                legend: { orientation: 'h', y: -0.2 }
+            };
+
+            const config = { responsive: true, displayModeBar: false };
+
+            // Renderizar con Plotly
+            Plotly.newPlot('plotLGN', [traceEmpirical, traceTheoretical], layout, config);
+        }
+        
+        // Cargar simulación inicial automáticamente
+        window.onload = function() {
+            setTimeout(runSimulation, 500);
+        };
+    </script>
+</body>
+</html>
