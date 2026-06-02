@@ -1,0 +1,42 @@
+
+Descriptive statistics
+======================================================================================
+Statistic                        N       Mean        St. Dev.       Min        Max    
+--------------------------------------------------------------------------------------
+Nutrient Data Bank Number      7,083 48,849,646.00 24,251,589.00 11,000,000 99,998,210
+Data.Alpha Carotene            7,083     43.76        259.52         0        4,655   
+Data.Beta Carotene             7,083    255.36        995.71         0        14,134  
+Data.Beta Cryptoxanthin        7,083     4.86          38.05         0        1,922   
+Data.Carbohydrate              7,083     20.83         21.89        0.00      100.00  
+Data.Cholesterol               7,083     34.46         77.48         0        3,074   
+Data.Choline                   7,083     34.44         43.90        0.00      820.20  
+Data.Fiber                     7,083     1.70          2.56         0.00      46.20   
+Data.Lutein and Zeaxanthin     7,083    213.35       1,015.89        0        15,643  
+Data.Lycopene                  7,083    263.57       1,161.25        0        45,902  
+Data.Niacin                    7,083     2.65          3.99         0.00      127.50  
+Data.Protein                   7,083     8.60          8.30         0.00      78.13   
+Data.Retinol                   7,083     49.83        227.99         0        9,349   
+Data.Riboflavin                7,083     0.19          0.35         0.00      17.50   
+Data.Selenium                  7,083     13.09         27.17        0.00     1,917.00 
+Data.Sugar Total               7,083     7.34          12.80        0.00      99.80   
+Data.Thiamin                   7,083     0.17          0.41         0.00      23.38   
+Data.Water                     7,083     59.80         26.83        0.00      99.98   
+Data.Fat.Monosaturated Fat     7,083     3.22          4.63         0.00      75.22   
+Data.Fat.Polysaturated Fat     7,083     2.17          3.90         0.00      67.85   
+Data.Fat.Saturated Fat         7,083     2.80          4.10         0.00      82.50   
+Data.Fat.Total Lipid           7,083     8.96          11.05        0.00      100.00  
+Data.Major Minerals.Calcium    7,083     73.47        114.86         0        1,375   
+Data.Major Minerals.Copper     7,083     0.14          0.39         0.00      14.47   
+Data.Major Minerals.Iron       7,083     1.75          3.64         0.00      64.10   
+Data.Major Minerals.Magnesium  7,083     27.79         38.21         0         611    
+Data.Major Minerals.Phosphorus 7,083    133.09        126.50         0        1,429   
+Data.Major Minerals.Potassium  7,083    217.13        204.81         0        6,040   
+Data.Major Minerals.Sodium     7,083    340.50        350.33         0        7,851   
+Data.Major Minerals.Zinc       7,083     1.28          2.92         0.00      98.86   
+Data.Vitamins.Vitamin A - RAE  7,083     73.14        241.91         0        9,363   
+Data.Vitamins.Vitamin B12      7,083     0.71          2.50         0.00      82.44   
+Data.Vitamins.Vitamin B6       7,083     0.20          0.37         0.00      12.00   
+Data.Vitamins.Vitamin C        7,083     5.70          15.55        0.00      560.00  
+Data.Vitamins.Vitamin E        7,083     1.09          3.13         0.00      149.40  
+Data.Vitamins.Vitamin K        7,083     14.21         54.94        0.00     1,640.00 
+--------------------------------------------------------------------------------------
