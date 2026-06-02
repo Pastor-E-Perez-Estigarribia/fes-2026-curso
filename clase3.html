@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 3: Inferencia Estadística - FES 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' } } } } }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .math-block { overflow-x: auto; padding: 1rem 0; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Menú Móvil -->
+    <div class="md:hidden fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3 flex justify-between items-center">
+        <div class="font-bold text-lg text-brand-600 truncate">FES 2026 - Clase 3</div>
+        <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Barra Lateral -->
+    <aside id="sidebar" class="bg-white w-64 border-r border-gray-200 flex-shrink-0 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg md:shadow-none mt-14 md:mt-0 pt-4 md:pt-0">
+        <div class="h-full flex flex-col">
+            <div class="p-6 hidden md:block">
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">Estadística y Simulación</h1>
+                <p class="text-sm text-gray-500 mt-2">MCC003 - Univ. de El Salvador</p>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</p>
+                <a href="index.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i> Inicio / Syllabus
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Bloques de Clase</p>
+                <a href="clase1.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i> Clase 1: Intro y EDA
+                </a>
+                <a href="clase2.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-dice mr-3 w-5 text-center"></i> Bloque 2: Probabilidad
+                </a>
+                <!-- Enlace Activo -->
+                <a href="clase3.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-brand-50 text-brand-600 transition-colors">
+                    <i class="fas fa-balance-scale mr-3 w-5 text-center"></i> Bloque 3: Inferencia
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Próximos Bloques</p>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 4: Multivariado
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 5: Series de Tiempo
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 6: Simulación
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200">
+                <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="flex items-center text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">
+                    <i class="fab fa-github mr-2"></i> Repositorio GitHub
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-30 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-8 pt-20 md:pt-8 w-full">
+        <div class="max-w-5xl mx-auto space-y-6 md:space-y-8 pb-12">
+            
+            <header class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100 border-l-4 border-l-indigo-500">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2 sm:gap-0">
+                    <span class="text-sm font-bold text-indigo-600 tracking-wider uppercase">Unidad 3</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Inferencia Estadística</h1>
+                <p class="text-base md:text-lg text-gray-600">Distribución muestral, estadística Bayesiana, estimación asintótica y formalización de Pruebas de Hipótesis.</p>
+                <div class="mt-6 flex flex-col sm:flex-row flex-wrap gap-3">
+                    <a href="https://drive.google.com/drive/folders/1Gve2FFJQiqY3RdMh_zxfFyXIgS_Vk8xr?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <i class="fab fa-google-drive text-lg"></i> Materiales (Drive)
+                    </a>
+                    <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm">
+                        <i class="fab fa-github text-lg"></i> Repositorio GitHub
+                    </a>
+                </div>
+            </header>
+
+            <!-- 1. Enlaces a Prácticas: Python y R -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-6 flex items-center border-b pb-3">
+                    <i class="fas fa-laptop-code text-indigo-600 mr-3"></i> Entornos de Práctica (Python & R)
+                </h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Python Colab -->
+                    <div class="bg-gradient-to-br from-yellow-50 to-orange-50 p-5 rounded-xl border border-yellow-200">
+                        <h3 class="font-bold text-yellow-900 flex items-center mb-4">
+                            <i class="fab fa-python text-xl mr-2"></i> Práctica en Python (Colab)
+                        </h3>
+                        <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_3_Inferencia/Introduccion_a_la_prueba_de_Hipotesis.ipynb" target="_blank" class="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow group border border-yellow-100">
+                            <div class="shrink-0 bg-yellow-100 p-2 rounded-full text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors"><i class="fas fa-play"></i></div>
+                            <div class="ml-3">
+                                <span class="block text-sm font-bold text-gray-800">Pruebas de Hipótesis</span>
+                                <span class="text-xs text-gray-500">Introducción y simulación en Colab.</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- R Scripts -->
+                    <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-5 rounded-xl border border-blue-200">
+                        <h3 class="font-bold text-blue-900 flex items-center mb-4">
+                            <i class="fas fa-chart-bar text-xl mr-2"></i> Scripts Prácticos en R
+                        </h3>
+                        <div class="space-y-2">
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/2-Inferencia%20Est/1-Intervalo%20de%20confianza%20pruebas%20de%20hipotesis%20y%20valor%20p.R" target="_blank" class="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow group border border-blue-100">
+                                <div class="shrink-0 text-blue-500 group-hover:text-blue-700 transition-colors"><i class="far fa-file-code text-xl"></i></div>
+                                <div class="ml-3 text-sm font-medium text-gray-700 group-hover:text-blue-700">1. Intervalos de Confianza y Valor-p</div>
+                            </a>
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/2-Inferencia%20Est/2-Inferencia%20con%20datos%20de%20frecuencia.R" target="_blank" class="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow group border border-blue-100">
+                                <div class="shrink-0 text-blue-500 group-hover:text-blue-700 transition-colors"><i class="far fa-file-code text-xl"></i></div>
+                                <div class="ml-3 text-sm font-medium text-gray-700 group-hover:text-blue-700">2. Inferencia con Frecuencias</div>
+                            </a>
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/2-Inferencia%20Est/3-Dise%C3%B1o_de_bloque.R" target="_blank" class="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow group border border-blue-100">
+                                <div class="shrink-0 text-blue-500 group-hover:text-blue-700 transition-colors"><i class="far fa-file-code text-xl"></i></div>
+                                <div class="ml-3 text-sm font-medium text-gray-700 group-hover:text-blue-700">3. Diseño de Bloques</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Conceptos Centrales (Resumen del PDF) -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">1</span>
+                    Formulación y Conceptos Clave
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- Frecuentista -->
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 border-l-2 border-indigo-500 pl-3">Distribución Muestral y Límite Central (CLT)</h3>
+                        <p class="text-gray-700 mt-2">La distribución muestral cuantifica la variabilidad de un estimador. Según el Teorema del Límite Central, para un \(n\) suficientemente grande, la media muestral \(\overline{X}\) sigue una distribución normal independientemente de la distribución original de los datos:</p>
+                        <div class="bg-gray-50 p-4 rounded-lg math-block mt-3 border border-gray-200">
+                            $$ \frac{\overline{X} - \mu}{\sigma/\sqrt{n}} \xrightarrow{d} \mathcal{N}(0, 1) $$
+                            <p class="text-xs text-gray-500 text-center mt-2">Donde el Error Estándar es \(se(\overline{X}) = \frac{\sigma}{\sqrt{n}}\)</p>
+                        </div>
+                    </div>
+
+                    <!-- Bayesiano -->
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 border-l-2 border-indigo-500 pl-3">Estadística Bayesiana</h3>
+                        <p class="text-gray-700 mt-2">A diferencia de la estadística frecuentista, el enfoque bayesiano incorpora conocimiento previo (A priori) y lo actualiza con nueva evidencia (Verosimilitud) para obtener una distribución A posteriori.</p>
+                        <div class="bg-gray-50 p-4 rounded-lg math-block mt-3 border border-gray-200">
+                            $$ P(A|B) = \frac{P(B|A)P(A)}{P(B)} $$
+                            <p class="text-xs text-gray-500 text-center mt-2">Posterior \(\propto\) Verosimilitud \(\times\) Prior</p>
+                        </div>
+                    </div>
+
+                    <!-- Pruebas -->
+                    <div class="bg-indigo-50 p-5 rounded-lg">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-2">Pruebas de Hipótesis: Frecuentista vs Permutación</h3>
+                        <ul class="list-disc pl-5 space-y-2 text-sm text-indigo-800">
+                            <li><strong>Valor-p (Frecuentista):</strong> Probabilidad de observar un estadístico al menos tan extremo como el calculado, asumiendo que la Hipótesis Nula (\(H_0\)) es verdadera.</li>
+                            <li><strong>Prueba Paramétrica:</strong> Basada en distribuciones teóricas (Ej. \(t\)-Student, Normal). Susceptible a violaciones de supuestos.</li>
+                            <li><strong>Prueba por Permutación:</strong> Robusta frente a supuestos de forma distribucional. Ideal para muestras pequeñas o sospechas de heterocedasticidad. Evalúa la distribución de la estadística reordenando aleatoriamente las etiquetas de los datos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Simulación Visual de Regiones de Rechazo -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm"><i class="fas fa-chart-area"></i></span>
+                    Interactividad: Región de Rechazo y Valor-p
+                </h2>
+                <p class="text-gray-700 text-sm mb-6">En una prueba Z de dos colas con un nivel de significancia \(\alpha = 0.05\), los valores críticos se ubican en \(\pm 1.96\). Las áreas sombreadas en rojo representan las zonas de rechazo de la Hipótesis Nula (\(H_0\)).</p>
+                
+                <div id="plotHypothesis" class="w-full h-80 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center">
+                    <span class="text-gray-400">Cargando gráfico...</span>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Script de Plotly para Distribución Normal -->
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        window.onload = function() {
+            // Generar datos para la distribución normal estándar
+            let x = [];
+            let y = [];
+            for (let i = -4; i <= 4; i += 0.05) {
+                x.push(i);
+                // Fórmula de la curva normal estándar
+                y.push((1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * Math.pow(i, 2)));
+            }
+
+            // Región de rechazo Izquierda (x <= -1.96)
+            let x_left = x.filter(val => val <= -1.96);
+            let y_left = x_left.map(val => (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * Math.pow(val, 2)));
+            // Agregar cero al final para rellenar área
+            x_left.push(-1.96, -4);
+            y_left.push(0, 0);
+
+            // Región de rechazo Derecha (x >= 1.96)
+            let x_right = x.filter(val => val >= 1.96);
+            let y_right = x_right.map(val => (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * Math.pow(val, 2)));
+            // Insertar cero al inicio para rellenar área
+            x_right.unshift(4, 1.96);
+            y_right.unshift(0, 0);
+
+            const traceCurve = {
+                x: x, y: y,
+                mode: 'lines',
+                name: 'Z ~ N(0,1)',
+                line: { color: '#312e81', width: 3 } // Indigo-900
+            };
+
+            const traceLeft = {
+                x: x_left, y: y_left,
+                fill: 'toself',
+                fillcolor: 'rgba(239, 68, 68, 0.5)', // Red-500 con transparencia
+                line: { color: 'transparent' },
+                name: 'Rechazo Izq (2.5%)'
+            };
+
+            const traceRight = {
+                x: x_right, y: y_right,
+                fill: 'toself',
+                fillcolor: 'rgba(239, 68, 68, 0.5)',
+                line: { color: 'transparent' },
+                name: 'Rechazo Der (2.5%)'
+            };
+
+            const layout = {
+                title: 'Distribución bajo la Hipótesis Nula',
+                xaxis: { title: 'Estadístico Z', range: [-4, 4], zeroline: true },
+                yaxis: { title: 'Densidad de Probabilidad', range: [0, 0.45], showgrid: false },
+                margin: { l: 50, r: 20, t: 40, b: 40 },
+                plot_bgcolor: '#f9fafb',
+                paper_bgcolor: '#ffffff',
+                showlegend: false,
+                shapes: [
+                    { type: 'line', x0: -1.96, y0: 0, x1: -1.96, y1: 0.4, line: { color: 'red', width: 1, dash: 'dot' } },
+                    { type: 'line', x0: 1.96, y0: 0, x1: 1.96, y1: 0.4, line: { color: 'red', width: 1, dash: 'dot' } }
+                ],
+                annotations: [
+                    { x: -2.5, y: 0.1, text: 'Z < -1.96', showarrow: false, font: {color: 'red'} },
+                    { x: 2.5, y: 0.1, text: 'Z > 1.96', showarrow: false, font: {color: 'red'} }
+                ]
+            };
+
+            const config = { responsive: true, displayModeBar: false };
+            Plotly.newPlot('plotHypothesis', [traceLeft, traceRight, traceCurve], layout, config);
+        };
+    </script>
+</body>
+</html>
