@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 4: Análisis Multivariado - FES 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' } } } } }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .math-block { overflow-x: auto; padding: 1rem 0; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Menú Móvil -->
+    <div class="md:hidden fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3 flex justify-between items-center">
+        <div class="font-bold text-lg text-emerald-600 truncate">FES 2026 - Clase 4</div>
+        <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Barra Lateral -->
+    <aside id="sidebar" class="bg-white w-64 border-r border-gray-200 flex-shrink-0 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg md:shadow-none mt-14 md:mt-0 pt-4 md:pt-0">
+        <div class="h-full flex flex-col">
+            <div class="p-6 hidden md:block">
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">Estadística y Simulación</h1>
+                <p class="text-sm text-gray-500 mt-2">MCC003 - Univ. de El Salvador</p>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</p>
+                <a href="index.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i> Inicio / Syllabus
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Bloques de Clase</p>
+                <a href="clase1.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i> Clase 1: Intro y EDA
+                </a>
+                <a href="clase2.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-dice mr-3 w-5 text-center"></i> Bloque 2: Probabilidad
+                </a>
+                <a href="clase3.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-balance-scale mr-3 w-5 text-center"></i> Bloque 3: Inferencia
+                </a>
+                <!-- Enlace Activo -->
+                <a href="clase4.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-emerald-50 text-emerald-700 transition-colors">
+                    <i class="fas fa-project-diagram mr-3 w-5 text-center"></i> Bloque 4: Multivariado
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Próximos Bloques</p>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 5: Series de Tiempo
+                </button>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 6: Simulación
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200">
+                <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="flex items-center text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">
+                    <i class="fab fa-github mr-2"></i> Repositorio GitHub
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-30 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-8 pt-20 md:pt-8 w-full">
+        <div class="max-w-5xl mx-auto space-y-6 md:space-y-8 pb-12">
+            
+            <header class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100 border-l-4 border-l-emerald-500">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2 sm:gap-0">
+                    <span class="text-sm font-bold text-emerald-600 tracking-wider uppercase">Unidad 4</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Análisis Multivariado y Regresión</h1>
+                <p class="text-base md:text-lg text-gray-600">Modelado estadístico avanzado: Mínimos Cuadrados Ordinarios (OLS), Regresión Logística, Regularización (Ridge/Lasso) y técnicas multivariantes como MANOVA.</p>
+                <div class="mt-6 flex flex-col sm:flex-row flex-wrap gap-3">
+                    <a href="https://drive.google.com/drive/folders/1Gve2FFJQiqY3RdMh_zxfFyXIgS_Vk8xr?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <i class="fab fa-google-drive text-lg"></i> Materiales (Drive)
+                    </a>
+                    <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm">
+                        <i class="fab fa-github text-lg"></i> Repositorio GitHub
+                    </a>
+                </div>
+            </header>
+
+            <!-- 1. Enlaces a Prácticas: Python y R -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-6 flex items-center border-b pb-3">
+                    <i class="fas fa-network-wired text-emerald-600 mr-3"></i> Entornos de Práctica (Python & R)
+                </h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Python Colab -->
+                    <div class="bg-gradient-to-br from-yellow-50 to-amber-50 p-5 rounded-xl border border-yellow-200">
+                        <h3 class="font-bold text-yellow-900 flex items-center mb-4">
+                            <i class="fab fa-python text-xl mr-2"></i> Prácticas en Python (Colab)
+                        </h3>
+                        <div class="space-y-3">
+                            <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_4_Multivariado/Regresion_Lineal_Minimos_Cuadrados_y_Maxima_Verosimilitud.ipynb" target="_blank" class="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow group border border-yellow-100">
+                                <div class="shrink-0 bg-yellow-100 p-2 rounded-full text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors"><i class="fas fa-chart-line"></i></div>
+                                <div class="ml-3">
+                                    <span class="block text-sm font-bold text-gray-800">Regresión Lineal (OLS y MLE)</span>
+                                </div>
+                            </a>
+                            <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_4_Multivariado/Regresion_Logistica.ipynb" target="_blank" class="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow group border border-yellow-100">
+                                <div class="shrink-0 bg-yellow-100 p-2 rounded-full text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors"><i class="fas fa-toggle-on"></i></div>
+                                <div class="ml-3">
+                                    <span class="block text-sm font-bold text-gray-800">Regresión Logística</span>
+                                </div>
+                            </a>
+                            <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_4_Multivariado/Regularizacion_en_Modelos_de_Regresion.ipynb" target="_blank" class="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow group border border-yellow-100">
+                                <div class="shrink-0 bg-yellow-100 p-2 rounded-full text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors"><i class="fas fa-compress-arrows-alt"></i></div>
+                                <div class="ml-3">
+                                    <span class="block text-sm font-bold text-gray-800">Regularización (Ridge/Lasso)</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- R Scripts -->
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-5 rounded-xl border border-emerald-200">
+                        <h3 class="font-bold text-emerald-900 flex items-center mb-4">
+                            <i class="fas fa-code text-xl mr-2"></i> Scripts Prácticos en R
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/3-Analisis_Multivariado/1-Disenho_de_bloque_factorial.R" target="_blank" class="flex items-center p-2 bg-white rounded-lg hover:shadow-sm border border-emerald-100 text-xs font-medium text-gray-700 hover:text-emerald-700">
+                                <i class="far fa-file-code text-emerald-500 mr-2"></i> 1. Bloque Factorial
+                            </a>
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/3-Analisis_Multivariado/2-Otros_dise%C3%B1os_factorial.R" target="_blank" class="flex items-center p-2 bg-white rounded-lg hover:shadow-sm border border-emerald-100 text-xs font-medium text-gray-700 hover:text-emerald-700">
+                                <i class="far fa-file-code text-emerald-500 mr-2"></i> 2. Otros Diseños
+                            </a>
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/3-Analisis_Multivariado/3-Regresion.R" target="_blank" class="flex items-center p-2 bg-white rounded-lg hover:shadow-sm border border-emerald-100 text-xs font-medium text-gray-700 hover:text-emerald-700">
+                                <i class="far fa-file-code text-emerald-500 mr-2"></i> 3. Regresión
+                            </a>
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/3-Analisis_Multivariado/4-regresion_logistica.R" target="_blank" class="flex items-center p-2 bg-white rounded-lg hover:shadow-sm border border-emerald-100 text-xs font-medium text-gray-700 hover:text-emerald-700">
+                                <i class="far fa-file-code text-emerald-500 mr-2"></i> 4. Reg. Logística
+                            </a>
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/3-Analisis_Multivariado/5-Analisis_discriminante.R" target="_blank" class="flex items-center p-2 bg-white rounded-lg hover:shadow-sm border border-emerald-100 text-xs font-medium text-gray-700 hover:text-emerald-700">
+                                <i class="far fa-file-code text-emerald-500 mr-2"></i> 5. A. Discriminante
+                            </a>
+                            <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/R_proy/scripts/3-Analisis_Multivariado/6-manova.R" target="_blank" class="flex items-center p-2 bg-white rounded-lg hover:shadow-sm border border-emerald-100 text-xs font-medium text-gray-700 hover:text-emerald-700">
+                                <i class="far fa-file-code text-emerald-500 mr-2"></i> 6. MANOVA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Teoría y Matemáticas -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">2</span>
+                    Fundamentos de Regresión Lineal
+                </h2>
+                <div class="prose max-w-none text-gray-700 space-y-4">
+                    <p>El objetivo de la regresión lineal es estimar una variable dependiente continua \(y\) como una combinación lineal de múltiples predictores o *features* \(X\). En su forma matricial, se expresa de la siguiente manera, asumiendo un error \(\epsilon\) normalmente distribuido:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg math-block border border-gray-200">
+                            <p class="font-semibold text-gray-800 mb-2">Forma Matricial:</p>
+                            $$ y = X\beta + \epsilon $$
+                            <p class="text-xs text-gray-500 mt-2">Donde \(X \in \mathbb{R}^{n \times p}\) y los errores \(\epsilon \sim \mathcal{N}(0, \sigma^2 I)\)</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg math-block border border-gray-200">
+                            <p class="font-semibold text-gray-800 mb-2">Estimación OLS (Mínimos Cuadrados):</p>
+                            $$ \hat{\beta}_{OLS} = (X^{\top}X)^{-1}X^{\top}y $$
+                            <p class="text-xs text-gray-500 mt-2">Minimiza la suma de cuadrados de los residuos: \(\arg\min_{\beta} ||y - X\beta||_2^2\).</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-800 mt-6 border-l-2 border-emerald-500 pl-3">Regularización: Previniendo el Overfitting</h3>
+                    <p>Cuando tenemos un dataset con muchas características altamente correlacionadas, la matriz \(X^\top X\) puede volverse inestable. La regularización añade una penalización a la magnitud de los coeficientes \(\beta\):</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm">
+                        <li><strong>Ridge (\(L_2\)):</strong> Penaliza con \(\alpha ||\beta||_2^2\). Reduce los coeficientes hacia cero pero no los elimina. Ideal para colinealidad.</li>
+                        <li><strong>Lasso (\(L_1\)):</strong> Penaliza con \(\alpha ||\beta||_1\). Puede forzar coeficientes exactamente a cero, actuando como selector automático de *features*.</li>
+                        <li><strong>ElasticNet:</strong> Combina ambas penalizaciones controlando su ratio.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 3. Simulación Interactiva -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                    <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm"><i class="fas fa-cube"></i></span>
+                    Visualización Multivariada: Plano de Regresión 3D
+                </h2>
+                <p class="text-sm text-gray-600 mb-6">A diferencia de la regresión simple (que dibuja una línea 2D), la Regresión Lineal Múltiple con dos variables predictoras (\(X_1\) y \(X_2\)) ajusta un <strong>plano</strong> bidimensional a través de una nube de puntos en un espacio 3D minimizando el error ortogonal (residuos).</p>
+                
+                <!-- Contenedor del Gráfico de Plotly -->
+                <div id="plot3dRegression" class="w-full h-[500px] bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden">
+                    <span class="text-gray-400 text-sm p-4 text-center">Cargando visualización 3D...</span>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Script de Navegación y Simulación Interactiva con Plotly -->
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        // Generar Gráfico 3D de Regresión Lineal Múltiple
+        window.onload = function() {
+            // Generar Nube de Puntos (Datos Empíricos)
+            let x1 = [], x2 = [], y_obs = [];
+            for (let i = 0; i < 100; i++) {
+                let val_x1 = Math.random() * 10;
+                let val_x2 = Math.random() * 10;
+                let noise = (Math.random() - 0.5) * 15; // Ruido aleatorio
+                // Ecuación verdadera: Y = 5 + 3*X1 + 2*X2 + ruido
+                let val_y = 5 + (3 * val_x1) + (2 * val_x2) + noise; 
+                
+                x1.push(val_x1);
+                x2.push(val_x2);
+                y_obs.push(val_y);
+            }
+
+            const traceScatter = {
+                x: x1, y: x2, z: y_obs,
+                mode: 'markers',
+                marker: {
+                    size: 4,
+                    color: y_obs,
+                    colorscale: 'Viridis',
+                    opacity: 0.8
+                },
+                type: 'scatter3d',
+                name: 'Observaciones'
+            };
+
+            // Generar el plano de predicción (OLS)
+            // Para visualización creamos una malla
+            let mesh_x1 = [0, 10, 0, 10];
+            let mesh_x2 = [0, 0, 10, 10];
+            let mesh_y = mesh_x1.map((v_x1, idx) => 5 + (3 * v_x1) + (2 * mesh_x2[idx]));
+
+            const tracePlane = {
+                x: mesh_x1, y: mesh_x2, z: mesh_y,
+                opacity: 0.5,
+                color: '#10b981', // Emerald-500
+                type: 'mesh3d',
+                name: 'Plano OLS Estimado',
+                showscale: false
+            };
+
+            const layout = {
+                title: 'Ajuste de Plano OLS (Y ~ X1 + X2)',
+                margin: { l: 0, r: 0, b: 0, t: 40 },
+                scene: {
+                    xaxis: { title: 'Predictor X1' },
+                    yaxis: { title: 'Predictor X2' },
+                    zaxis: { title: 'Respuesta Y' }
+                },
+                legend: { x: 0, y: 1 }
+            };
+
+            const config = { responsive: true, displayModeBar: true };
+            Plotly.newPlot('plot3dRegression', [tracePlane, traceScatter], layout, config);
+        };
+    </script>
+</body>
+</html>
