@@ -127,6 +127,12 @@
                                     <span class="block text-sm font-bold text-gray-800">Regularización (Ridge/Lasso)</span>
                                 </div>
                             </a>
+                            <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_4_Multivariado/Inferencia_bayesiana_aplicada_a_modelos_lineales.ipynb" target="_blank" class="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-shadow group border border-yellow-100">
+                                <div class="shrink-0 bg-yellow-100 p-2 rounded-full text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors"><i class="fas fa-brain"></i></div>
+                                <div class="ml-3">
+                                    <span class="block text-sm font-bold text-gray-800">Inferencia Bayesiana en M. Lineales</span>
+                                </div>
+                            </a>
                         </div>
                     </div>
 
@@ -199,9 +205,8 @@
                 </h2>
                 <p class="text-sm text-gray-600 mb-6">A diferencia de la regresión simple (que dibuja una línea 2D), la Regresión Lineal Múltiple con dos variables predictoras (\(X_1\) y \(X_2\)) ajusta un <strong>plano</strong> bidimensional a través de una nube de puntos en un espacio 3D minimizando el error ortogonal (residuos).</p>
                 
-                <!-- Contenedor del Gráfico de Plotly -->
-                <div id="plot3dRegression" class="w-full h-[500px] bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden">
-                    <span class="text-gray-400 text-sm p-4 text-center">Cargando visualización 3D...</span>
+                <!-- Contenedor del Gráfico de Plotly: removidos flex items-center para evitar desbordes -->
+                <div id="plot3dRegression" class="w-full h-[400px] md:h-[500px] bg-gray-50 rounded-lg border border-gray-200">
                 </div>
             </section>
 
@@ -264,16 +269,27 @@
             const layout = {
                 title: 'Ajuste de Plano OLS (Y ~ X1 + X2)',
                 margin: { l: 0, r: 0, b: 0, t: 40 },
+                autosize: true,
                 scene: {
-                    xaxis: { title: 'Predictor X1' },
-                    yaxis: { title: 'Predictor X2' },
-                    zaxis: { title: 'Respuesta Y' }
+                    xaxis: { title: 'X1' },
+                    yaxis: { title: 'X2' },
+                    zaxis: { title: 'Y' }
                 },
-                legend: { x: 0, y: 1 }
+                legend: {
+                    orientation: 'h',
+                    yanchor: 'bottom',
+                    y: -0.15,
+                    xanchor: 'center',
+                    x: 0.5
+                }
             };
 
             const config = { responsive: true, displayModeBar: true };
-            Plotly.newPlot('plot3dRegression', [tracePlane, traceScatter], layout, config);
+            const plotDiv = document.getElementById('plot3dRegression');
+            
+            Plotly.newPlot(plotDiv, [tracePlane, traceScatter], layout, config).then(() => {
+                Plotly.Plots.resize(plotDiv);
+            });
         };
     </script>
 </body>

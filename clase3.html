@@ -50,14 +50,14 @@
                     <i class="fas fa-dice mr-3 w-5 text-center"></i> Bloque 2: Probabilidad
                 </a>
                 <!-- Enlace Activo -->
-                <a href="clase3.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-brand-50 text-brand-600 transition-colors">
+                <a href="clase3.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-indigo-50 text-indigo-700 transition-colors">
                     <i class="fas fa-balance-scale mr-3 w-5 text-center"></i> Bloque 3: Inferencia
+                </a>
+                <a href="clase4.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-project-diagram mr-3 w-5 text-center"></i> Bloque 4: Multivariado
                 </a>
 
                 <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Próximos Bloques</p>
-                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
-                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 4: Multivariado
-                </button>
                 <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
                     <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 5: Series de Tiempo
                 </button>
@@ -188,8 +188,8 @@
                 </h2>
                 <p class="text-gray-700 text-sm mb-6">En una prueba Z de dos colas con un nivel de significancia \(\alpha = 0.05\), los valores críticos se ubican en \(\pm 1.96\). Las áreas sombreadas en rojo representan las zonas de rechazo de la Hipótesis Nula (\(H_0\)).</p>
                 
-                <div id="plotHypothesis" class="w-full h-80 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center">
-                    <span class="text-gray-400">Cargando gráfico...</span>
+                <!-- Eliminamos flex, items-center y justify-center para evitar conflicto con Plotly -->
+                <div id="plotHypothesis" class="w-full h-80 md:h-[400px] bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
                 </div>
             </section>
 
@@ -257,6 +257,7 @@
                 xaxis: { title: 'Estadístico Z', range: [-4, 4], zeroline: true },
                 yaxis: { title: 'Densidad de Probabilidad', range: [0, 0.45], showgrid: false },
                 margin: { l: 50, r: 20, t: 40, b: 40 },
+                autosize: true, // Esto ayuda a la adaptabilidad automática
                 plot_bgcolor: '#f9fafb',
                 paper_bgcolor: '#ffffff',
                 showlegend: false,
@@ -271,7 +272,14 @@
             };
 
             const config = { responsive: true, displayModeBar: false };
-            Plotly.newPlot('plotHypothesis', [traceLeft, traceRight, traceCurve], layout, config);
+            const plotDiv = document.getElementById('plotHypothesis');
+            
+            Plotly.newPlot(plotDiv, [traceLeft, traceRight, traceCurve], layout, config).then(() => {
+                // Evento para que el gráfico recalcule su tamaño si cambia la pantalla
+                window.addEventListener('resize', function() {
+                    Plotly.Plots.resize(plotDiv);
+                });
+            });
         };
     </script>
 </body>
