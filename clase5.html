@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 5: Series de Tiempo - FES 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' } } } } }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .math-block { overflow-x: auto; padding: 1rem 0; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Menú Móvil -->
+    <div class="md:hidden fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3 flex justify-between items-center">
+        <div class="font-bold text-lg text-rose-600 truncate">FES 2026 - Clase 5</div>
+        <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Barra Lateral -->
+    <aside id="sidebar" class="bg-white w-64 border-r border-gray-200 flex-shrink-0 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg md:shadow-none mt-14 md:mt-0 pt-4 md:pt-0">
+        <div class="h-full flex flex-col">
+            <div class="p-6 hidden md:block">
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">Estadística y Simulación</h1>
+                <p class="text-sm text-gray-500 mt-2">MCC003 - Univ. de El Salvador</p>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</p>
+                <a href="index.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i> Inicio / Syllabus
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Bloques de Clase</p>
+                <a href="clase1.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i> Clase 1: Intro y EDA
+                </a>
+                <a href="clase2.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-dice mr-3 w-5 text-center"></i> Bloque 2: Probabilidad
+                </a>
+                <a href="clase3.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-balance-scale mr-3 w-5 text-center"></i> Bloque 3: Inferencia
+                </a>
+                <a href="clase4.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-project-diagram mr-3 w-5 text-center"></i> Bloque 4: Multivariado
+                </a>
+                <!-- Enlace Activo -->
+                <a href="clase5.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-rose-50 text-rose-700 transition-colors">
+                    <i class="fas fa-chart-line mr-3 w-5 text-center"></i> Bloque 5: Series de Tiempo
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Próximos Bloques</p>
+                <button class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-400 cursor-not-allowed" title="Próximamente">
+                    <i class="fas fa-lock mr-3 w-5 text-center"></i> Bloque 6: Simulación
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200">
+                <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="flex items-center text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">
+                    <i class="fab fa-github mr-2"></i> Repositorio GitHub
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-30 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-8 pt-20 md:pt-8 w-full">
+        <div class="max-w-5xl mx-auto space-y-6 md:space-y-8 pb-12">
+            
+            <header class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100 border-l-4 border-l-rose-500">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2 sm:gap-0">
+                    <span class="text-sm font-bold text-rose-600 tracking-wider uppercase">Unidad 5</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Análisis de Series Temporales</h1>
+                <p class="text-base md:text-lg text-gray-600">Fundamentos de procesos estocásticos, análisis de estacionariedad y modelado predictivo para forecasting (ARIMA).</p>
+                <div class="mt-6 flex flex-col sm:flex-row flex-wrap gap-3">
+                    <a href="https://drive.google.com/drive/folders/1Gve2FFJQiqY3RdMh_zxfFyXIgS_Vk8xr?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <i class="fab fa-google-drive text-lg"></i> Materiales (Drive)
+                    </a>
+                    <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm">
+                        <i class="fab fa-github text-lg"></i> Repositorio GitHub
+                    </a>
+                </div>
+            </header>
+
+            <!-- 1. Enlaces a Prácticas: Python -->
+            <section class="bg-gradient-to-r from-rose-50 to-orange-50 rounded-xl shadow-sm p-6 md:p-8 border border-rose-100">
+                <h2 class="text-xl md:text-2xl font-bold text-rose-900 mb-4 flex items-center border-b border-rose-200 pb-3">
+                    <i class="fab fa-python text-rose-600 mr-3 text-2xl"></i> Laboratorios de Forecasting (Colab)
+                </h2>
+                <p class="text-gray-700 mb-6">Acompaña esta teoría ejecutando y modificando el código de los siguientes cuadernos alojados en nuestro repositorio oficial:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_5_Series_de_Tiempo/1-Introduccion_a_series_de_tiempo.ipynb" target="_blank" class="flex flex-col p-4 bg-white border border-rose-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="shrink-0 bg-rose-100 w-10 h-10 flex items-center justify-center rounded-full text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-colors mb-3"><i class="fas fa-hourglass-start"></i></div>
+                        <h3 class="font-bold text-gray-800">1. Introducción a Series</h3>
+                        <p class="text-xs text-gray-500 mt-1">Exploración de datos y conceptos de tiempo.</p>
+                    </a>
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_5_Series_de_Tiempo/2-Analisis_de_series_temporales_en_python.ipynb" target="_blank" class="flex flex-col p-4 bg-white border border-rose-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="shrink-0 bg-rose-100 w-10 h-10 flex items-center justify-center rounded-full text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-colors mb-3"><i class="fas fa-chart-area"></i></div>
+                        <h3 class="font-bold text-gray-800">2. Análisis Temporal</h3>
+                        <p class="text-xs text-gray-500 mt-1">Estacionariedad, descomposiciones y autocorrelación.</p>
+                    </a>
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_5_Series_de_Tiempo/3-Forecasting_con_python.ipynb" target="_blank" class="flex flex-col p-4 bg-white border border-rose-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="shrink-0 bg-rose-100 w-10 h-10 flex items-center justify-center rounded-full text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-colors mb-3"><i class="fas fa-magic"></i></div>
+                        <h3 class="font-bold text-gray-800">3. Forecasting ARIMA</h3>
+                        <p class="text-xs text-gray-500 mt-1">Entrenamiento y predicción de valores futuros.</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 2. Teoría y Matemáticas -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">1</span>
+                    Formalización Matemática de Series
+                </h2>
+                <div class="prose max-w-none text-gray-700 space-y-4">
+                    <p>Una Serie Temporal es una secuencia de variables aleatorias \(X_t\) indexadas en el tiempo \(t\). Para modelar estas series, introducimos dos conceptos esenciales: el <strong>Ruido Blanco</strong> y el <strong>Operador de Retardo (Lag)</strong>.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg math-block border border-gray-200">
+                            <p class="font-semibold text-gray-800 mb-2">Ruido Blanco (White Noise):</p>
+                            $$\epsilon_t \sim \mathcal{N}(0, \sigma^2)$$
+                            <p class="text-xs text-gray-500 mt-2">Innovaciones puramente aleatorias. No hay autocorrelación: \(\text{Cov}(\epsilon_t, \epsilon_{t-k}) = 0\).</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg math-block border border-gray-200">
+                            <p class="font-semibold text-gray-800 mb-2">Operador de Retardo (B):</p>
+                            $$B X_t = X_{t-1} \quad \text{y} \quad B^k X_t = X_{t-k}$$
+                            <p class="text-xs text-gray-500 mt-2">Permite formular ecuaciones complejas (como ARIMA) mediante polinomios algebraicos.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-800 mt-6 border-l-2 border-purple-500 pl-3">Estacionariedad (Stationarity)</h3>
+                    <p>Un modelo estocástico es estacionario de manera débil si sus propiedades estadísticas no varían a lo largo del tiempo. Es el supuesto base para los modelos clásicos (ARIMA).</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm">
+                        <li><strong>Media constante:</strong> \(\mathbb{E}[X_t] = \mu\) para todo \(t\).</li>
+                        <li><strong>Varianza constante:</strong> \(\text{Var}(X_t) = \sigma^2\) independiente de \(t\) (homocedasticidad).</li>
+                        <li><strong>Autocovarianza depende del rezago:</strong> \(\gamma(h) = \text{Cov}(X_t, X_{t-h})\) depende solo de la distancia \(h\), no del tiempo \(t\).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 3. Modelos ARIMA -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">2</span>
+                    Modelos Clásicos (ARIMA)
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                        <h3 class="font-bold text-gray-800 mb-2">Proceso Autorregresivo AR(p)</h3>
+                        <p class="text-sm text-gray-700 mb-2">El valor actual depende linealmente de sus \(p\) valores pasados.</p>
+                        <div class="math-block text-center overflow-x-auto">
+                            $$X_t = \phi_1 X_{t-1} + \dots + \phi_p X_{t-p} + \epsilon_t$$
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+                        <h3 class="font-bold text-gray-800 mb-2">Proceso de Medias Móviles MA(q)</h3>
+                        <p class="text-sm text-gray-700 mb-2">El valor actual depende linealmente de los \(q\) shocks/errores pasados.</p>
+                        <div class="math-block text-center overflow-x-auto">
+                            $$X_t = \epsilon_t + \theta_1 \epsilon_{t-1} + \dots + \theta_q \epsilon_{t-q}$$
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Simulación Interactiva -->
+            <section class="
