@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 6: Simulación Estocástica - FES 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 900: '#14532d' } } } } }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .math-block { overflow-x: auto; padding: 1rem 0; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Menú Móvil -->
+    <div class="md:hidden fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3 flex justify-between items-center">
+        <div class="font-bold text-lg text-violet-600 truncate">FES 2026 - Clase 6</div>
+        <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Barra Lateral -->
+    <aside id="sidebar" class="bg-white w-64 border-r border-gray-200 flex-shrink-0 absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-lg md:shadow-none mt-14 md:mt-0 pt-4 md:pt-0">
+        <div class="h-full flex flex-col">
+            <div class="p-6 hidden md:block">
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">Estadística y Simulación</h1>
+                <p class="text-sm text-gray-500 mt-2">MCC003 - Univ. de El Salvador</p>
+            </div>
+            
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</p>
+                <a href="index.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i> Inicio / Syllabus
+                </a>
+
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Bloques de Clase</p>
+                <a href="clase1.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i> Clase 1: Intro y EDA
+                </a>
+                <a href="clase2.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-dice mr-3 w-5 text-center"></i> Bloque 2: Probabilidad
+                </a>
+                <a href="clase3.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-balance-scale mr-3 w-5 text-center"></i> Bloque 3: Inferencia
+                </a>
+                <a href="clase4.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-project-diagram mr-3 w-5 text-center"></i> Bloque 4: Multivariado
+                </a>
+                <a href="clase5.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chart-line mr-3 w-5 text-center"></i> Bloque 5: Series de Tiempo
+                </a>
+                <!-- Enlace Activo -->
+                <a href="clase6.html" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md bg-violet-50 text-violet-700 transition-colors">
+                    <i class="fas fa-random mr-3 w-5 text-center"></i> Bloque 6: Simulación
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200">
+                <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="flex items-center text-sm font-medium text-gray-600 hover:text-brand-600 transition-colors">
+                    <i class="fab fa-github mr-2"></i> Repositorio GitHub
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div id="mobile-overlay" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-30 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-8 pt-20 md:pt-8 w-full">
+        <div class="max-w-5xl mx-auto space-y-6 md:space-y-8 pb-12">
+            
+            <header class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100 border-l-4 border-l-violet-500">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2 sm:gap-0">
+                    <span class="text-sm font-bold text-violet-600 tracking-wider uppercase">Unidades 6 y 7</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">Simulación Estocástica Computacional</h1>
+                <p class="text-base md:text-lg text-gray-600">Modelado de sistemas reales mediante la incorporación de incertidumbre. Aplicaciones del Método de Monte Carlo y Procesos Estocásticos.</p>
+                <div class="mt-6 flex flex-col sm:flex-row flex-wrap gap-3">
+                    <a href="https://drive.google.com/drive/folders/1Gve2FFJQiqY3RdMh_zxfFyXIgS_Vk8xr?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <i class="fab fa-google-drive text-lg"></i> Materiales (Drive)
+                    </a>
+                    <a href="https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors shadow-sm">
+                        <i class="fab fa-github text-lg"></i> Repositorio GitHub
+                    </a>
+                </div>
+            </header>
+
+            <!-- 1. Enlaces a Prácticas: Python -->
+            <section class="bg-gradient-to-r from-violet-50 to-fuchsia-50 rounded-xl shadow-sm p-6 md:p-8 border border-violet-100">
+                <h2 class="text-xl md:text-2xl font-bold text-violet-900 mb-4 flex items-center border-b border-violet-200 pb-3">
+                    <i class="fab fa-python text-violet-600 mr-3 text-2xl"></i> Práctica de Simulación (Colab)
+                </h2>
+                <p class="text-gray-700 mb-6">Acompaña la teoría ejecutando los experimentos de Monte Carlo y Caminatas Aleatorias en nuestro entorno interactivo:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/CLASE_6_Simulacion/Fundamentos_y_Aplicacion_de_la_Simulacion_Estoc%C3%A1stica_Computacional.ipynb" target="_blank" class="flex items-center p-4 bg-white border border-violet-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="shrink-0 bg-violet-100 p-3 rounded-full text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-colors"><i class="fas fa-laptop-code"></i></div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-gray-800">Simulación Estocástica</h3>
+                            <p class="text-xs text-gray-500 mt-1">Implementación en Python: Monte Carlo y Random Walks.</p>
+                        </div>
+                    </a>
+                    <!-- Modificado: Enlace activo para Proyecto Final -->
+                    <a href="https://colab.research.google.com/github/Pastor-E-Perez-Estigarribia/fes-2026-curso/blob/main/colab/PROYECTO_FINAL/Proyecto_Final.ipynb" target="_blank" class="flex items-center p-4 bg-white border border-violet-200 rounded-lg hover:shadow-md transition-shadow group">
+                        <div class="shrink-0 bg-violet-100 p-3 rounded-full text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-colors"><i class="fas fa-flag-checkered"></i></div>
+                        <div class="ml-4">
+                            <h3 class="font-bold text-gray-800">Proyecto Final</h3>
+                            <p class="text-xs text-gray-500 mt-1">Aplica estos conceptos en tu entrega del 12 de Junio.</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 2. Teoría y Matemáticas -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm">1</span>
+                    Fundamentos de la Simulación
+                </h2>
+                <div class="prose max-w-none text-gray-700 space-y-4">
+                    <p>Simular es construir un modelo computacional que reproduzca el comportamiento de un sistema real incorporando incertidumbre mediante distribuciones de probabilidad. Nos permite estimar resultados que son analíticamente imposibles o muy costosos de obtener.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg math-block border border-gray-200">
+                            <p class="font-semibold text-gray-800 mb-2">Método de Monte Carlo:</p>
+                            $$\mathbb{E}[f(X)] \approx \frac{1}{N} \sum_{i=1}^{N} f(x_i)$$
+                            <p class="text-xs text-gray-500 mt-2">Basado en la Ley de los Grandes Números. Aproxima esperanzas matemáticas generando múltiples muestras aleatorias $x_i$.</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg math-block border border-gray-200">
+                            <p class="font-semibold text-gray-800 mb-2">Caminata Aleatoria (Random Walk):</p>
+                            $$S_n = \sum_{i=1}^{n} X_i = S_{n-1} + X_n$$
+                            <p class="text-xs text-gray-500 mt-2">Un proceso estocástico clásico donde la posición futura solo depende de la posición actual más un paso aleatorio $X_i$.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Simulación Interactiva -->
+            <section class="bg-white rounded-xl shadow-sm p-6 md:p-8 border border-gray-100">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                    <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 text-sm"><i class="fas fa-project-diagram"></i></span>
+                    Interactividad: Monte Carlo de Caminatas Aleatorias
+                </h2>
+                <p class="text-sm text-gray-600 mb-6">Esta simulación utiliza el <strong>Método de Monte Carlo</strong> para proyectar múltiples escenarios futuros posibles (Caminatas Aleatorias). Al hacer clic en "Ejecutar Simulación", generaremos 10 caminos estocásticos de 100 pasos. Observa cómo, aunque cada camino es impredecible, la dispersión conjunta ilustra la incertidumbre total del sistema a lo largo del tiempo.</p>
+                
+                <div class="mb-4">
+                    <button onclick="runSimulation()" class="w-full sm:w-auto justify-center bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow-sm flex items-center">
+                        <i class="fas fa-play mr-2"></i> Ejecutar Simulación (10 Escenarios)
+                    </button>
+                </div>
+
+                <!-- Contenedor del Gráfico de Plotly: Altura controlada, sin clases conflictivas -->
+                <div id="plotSimulation" class="w-full h-[400px] md:h-[500px] bg-gray-50 rounded-lg border border-gray-200">
+                </div>
+            </section>
+
+            <!-- Asistente IA -->
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl shadow-sm p-6 md:p-8 border border-indigo-100 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 lg:gap-6 mt-8">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i class="fas fa-robot text-indigo-600 text-2xl"></i>
+                        <h2 class="text-xl md:text-2xl font-bold text-gray-900">Asistente de IA del Módulo</h2>
+                    </div>
+                    <p class="text-sm md:text-base text-gray-700">Resuelve tus dudas sobre estadística, código en Python/R y teoría de simulación interactuando con nuestro asistente basado en <strong>NotebookLM</strong>.</p>
+                </div>
+                <a href="https://notebooklm.google.com/notebook/1aacd1cc-a948-490e-b679-1e276438b880" target="_blank" rel="noopener noreferrer" class="w-full lg:w-auto justify-center shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-colors flex items-center gap-2">
+                    <i class="fas fa-external-link-alt"></i> Abrir Asistente
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Script de Plotly para Simulaciones -->
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function runSimulation() {
+            const n_steps = 100;
+            const n_paths = 10;
+            const traces = [];
+            
+            // Base temporal
+            let time = Array.from({length: n_steps + 1}, (_, i) => i);
+
+            // Generar los N caminos (Monte Carlo)
+            for (let path = 0; path < n_paths; path++) {
+                let current_val = 0;
+                let path_data = [current_val];
+                
+                for (let i = 1; i <= n_steps; i++) {
+                    // Paso estocástico normal estándar (aprox. usando Irwin-Hall)
+                    let step = 0;
+                    for(let j=0; j<6; j++) step += Math.random();
+                    step = (step - 3) * 1.5; 
+                    
+                    current_val += step;
+                    path_data.push(current_val);
+                }
+
+                // Generar colores distintos en escala morada/teal
+                const hue = 250 + (path * 10); // Variaciones de violeta a magenta
+                
+                traces.push({
+                    x: time, 
+                    y: path_data,
+                    mode: 'lines',
+                    name: `Escenario ${path + 1}`,
+                    line: { color: `hsl(${hue}, 70%, 50%)`, width: 1.5 },
+                    opacity: 0.8
+                });
+            }
+
+            const layout = {
+                title: 'Simulación Monte Carlo de Caminatas Aleatorias',
+                xaxis: { title: 'Pasos de Tiempo (t)', showgrid: false },
+                yaxis: { title: 'Posición del Sistema (S_n)', zeroline: true, zerolinecolor: '#94a3b8' },
+                margin: { l: 50, r: 20, t: 40, b: 40 },
+                autosize: true, 
+                plot_bgcolor: '#f9fafb',
+                paper_bgcolor: '#ffffff',
+                showlegend: false
+            };
+
+            const config = { responsive: true, displayModeBar: false };
+            const plotDiv = document.getElementById('plotSimulation');
+            
+            Plotly.newPlot(plotDiv, traces, layout, config).then(() => {
+                Plotly.Plots.resize(plotDiv);
+            });
+        }
+
+        window.onload = function() {
+            // Cargar y ejecutar la simulación por primera vez
+            runSimulation();
+            
+            const plotDiv = document.getElementById('plotSimulation');
+            window.addEventListener('resize', function() {
+                Plotly.Plots.resize(plotDiv);
+            });
+        };
+    </script>
+</body>
+</html>
