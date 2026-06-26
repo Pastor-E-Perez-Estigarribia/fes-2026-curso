@@ -1,6 +1,6 @@
-# **Fundamentos de Estadística y Simulación (FES) 2026**
+# **Fundamentos de Estadística 2026**
 
-Bienvenido al repositorio oficial del módulo **Fundamentos de Estadística y Simulación (MCC003)** de la Maestría en Ingeniería para la Industria con Especialización en Ciencias de la Computación (Universidad de El Salvador).
+Bienvenido al repositorio oficial del módulo **Fundamentos de Estadística**.
 
 ## **🌐 Sitio Web del Curso**
 
