@@ -1,6 +1,6 @@
-# **Fundamentos de Estadística 2026**
+# **Estadística 2026**
 
-Bienvenido al repositorio oficial del módulo **Fundamentos de Estadística**.
+Bienvenido al repositorio oficial del módulo **Estadística**.
 
 ## **🌐 Sitio Web del Curso**
 
@@ -8,7 +8,6 @@ El material teórico, cronograma y syllabus interactivo se encuentran publicados
 
 [**Sitio Web FES 2026 (GitHub Pages)**](https://pastor-e-perez-estigarribia.github.io/fes-2026-curso/)
 
-*(Nota: El código fuente de la web y los cuadernos se encuentran en este [Repositorio de GitHub](https://github.com/Pastor-E-Perez-Estigarribia/fes-2026-curso))*
 
 ## **📚 Estructura del Módulo**
 
@@ -20,8 +19,8 @@ Este repositorio sigue un enfoque bilingüe (R y Python) para el Análisis Explo
 2. Distribuciones de Probabilidad.  
 3. Inferencia Estadística y Pruebas de Hipótesis.  
 4. Análisis Multivariado (GLM, PCA).  
-5. Series de Tiempo.  
-6. Simulación (Monte Carlo y Sistemas de Colas).
+5. Series de Tiempo (materiales extras).  
+6. Simulación, Monte Carlo y Sistemas de Colas (materiales extras).
 
 ## **🛠 Entornos de Trabajo**
 
@@ -44,4 +43,4 @@ Los estudiantes tienen acceso a un asistente interactivo impulsado por NotebookL
 
 * [**Acceder al Asistente IA**](https://notebooklm.google.com/notebook/1aacd1cc-a948-490e-b679-1e276438b880)
 
-*Profesor: Pastor E. Pérez-Estigarribia*
+*Profesores: Cesar Ayala & Pastor E. Pérez-Estigarribia*
